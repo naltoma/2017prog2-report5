@@ -65,15 +65,8 @@ public class LivingThing {
      * @param damage 受けたダメージ
      */
     public void wounded(int damage){
-        /*
-        hitPoint -= damage;
-        if( hitPoint < 0 ) {
-            dead = true;
-            System.out.printf("%sは倒れた。\n", name);
-        }
-        */
         updateHitPoint(damage);
-        if( getHitPoint() < 0 ) {
+        if( getHitPoint() <= 0 ) { //0の時も死ぬように修正
             setDead(true);
             System.out.printf("%sは倒れた。\n", getName());
         }
