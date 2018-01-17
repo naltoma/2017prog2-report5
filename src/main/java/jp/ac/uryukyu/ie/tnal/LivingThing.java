@@ -13,6 +13,9 @@ public class LivingThing {
     private int hitPoint;
     private int attack;
     private boolean dead;
+    private String deadMessage;
+    private double criticalRate;
+    private String criticalMessage;
 
     /**
      * コンストラクタ。名前、最大HP、攻撃力を指定する。
@@ -20,12 +23,15 @@ public class LivingThing {
      * @param maximumHP ヒーローのHP
      * @param attack ヒーローの攻撃力
      */
-    public LivingThing (String name, int maximumHP, int attack) {
+    public LivingThing (String name, int maximumHP, int attack, String deadMessage, double criticalRate, String criticalMessage) {
         this.name = name;
         hitPoint = maximumHP;
         this.attack = attack;
         dead = false;
         System.out.printf("%sのHPは%d。攻撃力は%dです。\n", name, maximumHP, attack);
+        this.deadMessage = deadMessage;
+        this.criticalRate = criticalRate;
+        this.criticalMessage = criticalMessage;
     }
 
     /**
@@ -52,10 +58,19 @@ public class LivingThing {
      * @param opponent 攻撃対象
      */
     public void attack(LivingThing opponent){
-        if( this.dead == false ) {
-            int damage = (int) (Math.random() * attack);
-            System.out.printf("%sの攻撃！%sに%dのダメージを与えた！！\n", name, opponent.getName(), damage);
-            opponent.wounded(damage);
+        if( isDead() == false ) {
+            int damage = (int) (Math.random() * getAttack());
+            if ( damage == 0 ) {
+                System.out.printf("%sの攻撃！,,,だが、%sは攻撃を回避した！\n", getName(), opponent.getName());
+            }else {
+                if( Math.random() < criticalRate ){
+                    damage *= 2;
+                    System.out.printf("%sの攻撃！%s！！%sに%dのダメージを与えた！！\n", getName(), criticalMessage, opponent.getName(), damage);
+                }else {
+                    System.out.printf("%sの攻撃！%sに%dのダメージを与えた！！\n", getName(), opponent.getName(), damage);
+                }
+                opponent.wounded(damage);
+            }
         }
     }
 
@@ -68,7 +83,8 @@ public class LivingThing {
         updateHitPoint(damage);
         if( getHitPoint() <= 0 ) { //0の時も死ぬように修正
             setDead(true);
-            System.out.printf("%sは倒れた。\n", getName());
+            System.out.printf("%s\n", deadMessage);
         }
     }
+
 }

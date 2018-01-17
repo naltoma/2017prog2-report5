@@ -5,8 +5,9 @@ package jp.ac.uryukyu.ie.tnal;
  */
 public class Main {
     public static void main(String[] args){
-        Hero hero = new Hero("勇者", 10, 5);
-        Enemy enemy = new Enemy("スライム", 6, 3);
+        Hero hero = new Hero("勇者", 10, 5, "勇者死んじゃった", 0.4, "会心の一撃");
+        Enemy enemy = new Enemy("スライム", 6, 30, "モンスター死亡", 0.3, "痛恨の一撃");
+        //LivingThing enemy = new LivingThing();
 
         System.out.printf("%s vs. %s\n", hero.getName(), enemy.getName());
 
